@@ -7,6 +7,7 @@
 
 @if (!@empty($myName))
     <p>{{$myName}}</p>
+    <br>
 @endif
 
 @endsection

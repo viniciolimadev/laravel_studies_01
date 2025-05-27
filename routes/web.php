@@ -8,7 +8,9 @@ use App\Http\Controllers\SingleActionController;
 use App\Http\Controllers\TesteMainController;
 use App\Http\Controllers\TesteUserController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\EndMidlleware;
 use App\Http\Middleware\OnlyAdmin;
+use App\Http\Middleware\StartMidlleware;
 use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -213,3 +215,18 @@ Route::get('admin',[AdminController::class],'index')->name('admin');
 //Herança de controller
 
 Route::get('teste/{value}',[MainController::class],'teste');
+
+//Midlleware
+// Route::get('/', [MainController::class],'index')->name('index')->middleware(StartMidlleware::class);
+// Route::get('/about' ,[MainController::class],'about')->name('about')->midlleware(EndMidlleware::class);
+// // Route::get('/contact' ,[MainController::class],'conatct')->name('contact')->middleware(StartMidlleware::class,EndMidlleware::class);
+// Route::middleware(StartMidlleware::class,EndMidlleware::class)->group(function(){
+// Route::get('/', [MainController::class],'index')->name('index');
+// Route::get('/about' ,[MainController::class],'about')->name('about')->withoutMiddleware(StartMidlleware::class);
+// Route::get('/contact' ,[MainController::class],'conatct')->name('contact');
+// });
+Route::middleware('correr_antes')->group(function(){
+Route::get('/', [MainController::class],'index')->name('index');
+Route::get('/about' ,[MainController::class],'about')->name('about')->withoutMiddleware(StartMidlleware::class);
+Route::get('/contact' ,[MainController::class],'conatct')->name('contact');
+});
